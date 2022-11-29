@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
                     }
                 }
             }
-            if (c != null)  request.setAttribute("username",c.getName());
+            if (c != null)  request.setAttribute("username",c.getValue());
             else            request.setAttribute("username", "");
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
@@ -104,8 +104,16 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private static String bytesToHex(byte[] hash) {
-        return getString(hash);
+    public String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 
 }

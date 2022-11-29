@@ -16,6 +16,7 @@ public class IndexServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             if (session != null) {
+                System.out.println("Session exists");
                 response.sendRedirect(request.getContextPath() + "/todos");
                 return;
             }

@@ -8,10 +8,7 @@ import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import javax.sql.DataSource;
 import java.io.IOException;
 
@@ -42,11 +39,12 @@ public class TodosServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-
                 response.setStatus(403);
                 response.sendRedirect(request.getContextPath() + "/");
-                throw new Exception("User not connected");
             }
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/todos.jsp");
+            dispatcher.forward(request, response);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -61,6 +59,9 @@ public class TodosServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (action.equals("Logout")) {
                 session.invalidate();
+                Cookie c = new Cookie("JSESSIONID","");
+                c.setMaxAge(0);
+                response.addCookie(c);
                 response.sendRedirect(request.getContextPath() + "/");
             };
 
