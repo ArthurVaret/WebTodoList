@@ -3,6 +3,13 @@ A simple web todo list app with roles coded with Java EE and MariaDB
 
 ## Configure context for the database
 
+Create META-INF folder
+```sh
+# in project root folder
+mkdir src/main/webapp/META-INF
+touch src/main/webapp/META-INF/context.xml
+```
+and paste the content (make sure to modify parameters) in `context.xml`
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
