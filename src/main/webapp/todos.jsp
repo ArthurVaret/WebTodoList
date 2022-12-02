@@ -12,7 +12,7 @@
             <c:if test="${!empty sessionScope.username && !empty sessionScope.role}">
                 <h1>${sessionScope.username} as ${sessionScope.role}</h1>
                 <c:if test="${sessionScope.role == \"instructor\"}">
-                    <form method="POST" action="todos">
+                    <form method="POST" action="todo-form">
                         <input type="submit" name="action" value="Add">
                     </form>
                 </c:if>

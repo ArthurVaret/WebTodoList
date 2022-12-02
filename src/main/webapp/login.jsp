@@ -12,14 +12,14 @@
         <div class="container">
             <h1>Login</h1>
             <div>
-                <form method="POST" action="login">
+                <form method="POST" action="j_security_check">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="username" value="${username}">
+                    <input type="text" id="username" name="j_username" placeholder="username" value="${username}">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="password">
+                    <input type="password" id="password" name="j_password" placeholder="password">
                     <input type="submit" name="submit" value="Login">
                 </form>
-                <a href="login">Register</a>
+                <a href="register">Register</a>
                 <h2>${message}</h2>
             </div>
         </div>
