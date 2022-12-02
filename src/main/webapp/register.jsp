@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>WebTodoList</title>
+        <title>Register - WebTodoList</title>
+        <link type="text/css" rel="stylesheet" href="style/main.css">
     </head>
     <body>
         <div class="container">
@@ -26,7 +26,7 @@
                     <input type="password" id="confirm" name="confirm-password" placeholder="confirm your password">
                     <input type="submit" name="submit" value="Register">
                 </form>
-                <a href="login">Log in</a>
+                <a class="link" href="login">>Login</a>
                 <h2>${message}</h2>
             </div>
         </div>

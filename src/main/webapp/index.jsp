@@ -10,8 +10,8 @@
         <div class="container">
             <h1>Welcome to WebTodoList</h1>
             <div class="main-nav">
-                <a href="login">Login</a>
-                <a href="register">Register</a>
+                <a class="link" href="login">Login</a>
+                <a class="link" href="register">Register</a>
             </div>
         </div>
     </body>
