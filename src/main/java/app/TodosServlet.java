@@ -37,16 +37,15 @@ public class TodosServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            HttpSession session = request.getSession();
-            if (session == null) {
-                System.out.println("No session");
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("id") == null ) {
+                System.out.println("[!] No session");
                 response.setStatus(403);
                 response.sendRedirect(request.getContextPath() + "/");
+            } else {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/todos.jsp");
+                dispatcher.forward(request, response);
             }
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/todos.jsp");
-            dispatcher.forward(request, response);
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -57,13 +56,29 @@ public class TodosServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             String action = request.getParameter("action");
-            HttpSession session = request.getSession();
+            System.out.println("Action : " + action);
+            HttpSession session = request.getSession(false);
             if (action.equals("Logout")) {
-                session.invalidate();
-                Cookie c = new Cookie("JSESSIONID","");
-                c.setMaxAge(0);
-                response.addCookie(c);
+
+                Cookie[] cookies = request.getCookies();
+                if (cookies != null) {
+                    for (Cookie c: cookies) {
+                        if (c.getName().equals("JSESSIONID")) {
+                            c.setMaxAge(0);
+                            response.addCookie(c);
+                            break;
+                        }
+                    }
+                }
+                if (session != null)
+                    session.invalidate();
                 response.sendRedirect(request.getContextPath()+"/");
+            } else if (action.equals("Add")) {
+                System.out.println("[#] Instructor want to add a to do, redirecting to form...");
+                response.sendRedirect(request.getContextPath()+"/todo-form");
+            } else {
+                System.out.println("[#] No action specified, redirecting nowhere");
+                response.sendRedirect(request.getContextPath());
             }
 
         } catch (Exception e) {

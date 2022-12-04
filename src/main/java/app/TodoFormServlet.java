@@ -12,7 +12,7 @@ import javax.servlet.http.*;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-@WebServlet(name = "todoformServlet", value = "/todo-form")
+@WebServlet(name = "todoformServlet", value = "/todos/form")
 public class TodoFormServlet extends HttpServlet {
     private WtlDBUtil DB;
     private DataSource dataSource;
@@ -37,15 +37,14 @@ public class TodoFormServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            HttpSession session = request.getSession();
-            if (session == null) {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/form.jsp");
+                dispatcher.forward(request, response);
+            } else {
                 response.setStatus(403);
                 response.sendRedirect("/");
             }
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/todoform.jsp");
-            dispatcher.forward(request, response);
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -68,11 +67,11 @@ public class TodoFormServlet extends HttpServlet {
             String description = request.getParameter("description");
             if (DB.todo(description)) {
                 request.setAttribute("message","Todo added !");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/todoform.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/form.jsp");
                 dispatcher.forward(request, response);
             } else {
                 request.setAttribute("message","Error");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/todoform.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/form.jsp");
                 dispatcher.forward(request, response);
             }
 

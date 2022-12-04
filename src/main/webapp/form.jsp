@@ -10,13 +10,13 @@
 <body>
 <div class="container">
   <h1>New to do</h1>
-  <form method="POST" action="todo-form">
+  <form method="POST" action="./form">
     <label for="description">Description</label>
     <input class="text-input" type="text" id="description" name="description" placeholder="Todo description">
     <input class="link" type="submit" value="Add">
   </form>
   <h2>${message}</h2>
-  <a href="todos">Go back</a>
+  <a href="../todos">Go back</a>
 </div>
 </body>
 </html>

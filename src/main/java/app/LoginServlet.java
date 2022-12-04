@@ -41,20 +41,27 @@ public class LoginServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         try {
-            Cookie c = null;
-            if (request.getCookies() != null) {
-                for (Cookie cookie:request.getCookies()) {
-                    if (cookie.getName().equals("username")) {
-                        c = cookie;
-                        break;
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                System.out.println("[#] Session exists, redirecting to todo list");
+                response.sendRedirect(request.getContextPath() + "/todos");
+            } else {
+                System.out.println("[#] No session, checking cookies");
+                Cookie c = null;
+                if (request.getCookies() != null) {
+                    for (Cookie cookie:request.getCookies()) {
+                        if (cookie.getName().equals("username")) {
+                            c = cookie;
+                            break;
+                        }
                     }
                 }
+                if (c != null)  request.setAttribute("username",c.getValue());
+                else            request.setAttribute("username", "");
+                System.out.println("[#] Sending login html");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+                dispatcher.forward(request, response);
             }
-            if (c != null)  request.setAttribute("username",c.getValue());
-            else            request.setAttribute("username", "");
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
-            dispatcher.forward(request, response);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

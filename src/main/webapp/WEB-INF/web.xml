@@ -7,45 +7,5 @@
         <servlet-name>default</servlet-name>
         <url-pattern>/style/*</url-pattern>
     </servlet-mapping>
-    <!-- Get todos security    -->
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>GetTodos</web-resource-name>
-            <url-pattern>/todos</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>instructor</role-name>
-            <role-name>student</role-name>
-        </auth-constraint>
-    </security-constraint>
-    <!--    Update todos security -->
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>UpdateTodos</web-resource-name>
-            <url-pattern>/todo-form</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>instructor</role-name>
-        </auth-constraint>
-    </security-constraint>
-    <security-role>
-        <description>Instructor</description>
-        <role-name>instructor</role-name>
-    </security-role>
-    <security-role>
-        <description>Student</description>
-        <role-name>student</role-name>
-    </security-role>
-
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <realm-name>Role space</realm-name>
-        <form-login-config>
-            <form-login-page>/login.jsp</form-login-page>
-            <form-error-page>/error.jsp</form-error-page>
-        </form-login-config>
-    </login-config>
 </web-app>
 
