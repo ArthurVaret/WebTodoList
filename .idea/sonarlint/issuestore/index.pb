@@ -3,8 +3,6 @@
 mvnw.cmd,1\f\1f1763f358c257ea3515417352b82b0165647ad1
 S
 #.idea/artifacts/webtodolist_war.xml,7\5\7548f40c8d318b1cbcd9e62d6a71b5fa817f3639
-\
-,.idea/artifacts/webtodolist_war_exploded.xml,1\d\1d7780a114ebd2037940d90addb47682ebacb4fd
 B
 scripts/schema.sql,2\c\2c4ad09f38616fde6e3c4f43349a5212edb77f25
 U

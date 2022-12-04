@@ -44,6 +44,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 System.out.println("[#] Session exists, redirecting to todo list");
+                System.out.println("User : " + session.getAttribute("username") + ", " + session.getAttribute("role"));
                 response.sendRedirect(request.getContextPath() + "/todos");
             } else {
                 System.out.println("[#] No session, checking cookies");

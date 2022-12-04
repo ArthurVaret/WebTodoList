@@ -39,11 +39,22 @@ public class TodoFormServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             if (session != null) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/form.jsp");
-                dispatcher.forward(request, response);
+                System.out.println("[!] User logged, checking role...");
+                System.out.println("User : " + session.getAttribute("username") + ", " + session.getAttribute("role"));
+                if (!session.getAttribute("role").equals("instructor")) {
+                    System.out.println("[!] Not instructor, redirecting... ");
+                    response.setStatus(403);
+                    response.sendRedirect(request.getContextPath() + "/todo");
+                } else {
+                    System.out.println("[!] Instructor verified ! Showing form... ");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/form.jsp");
+                    dispatcher.forward(request, response);
+                }
             } else {
+                System.out.println("[!] No session or role not set as instructor ");
                 response.setStatus(403);
-                response.sendRedirect("/");
+                response.sendRedirect(request.getContextPath() + "/");
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -54,28 +65,15 @@ public class TodoFormServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            String action = request.getParameter("action");
             HttpSession session = request.getSession(false);
-            if (action.equals("Logout")) {
-                session.invalidate();
-                Cookie c = new Cookie("JSESSIONID","");
-                c.setMaxAge(0);
-                response.addCookie(c);
+            if (session != null && session.getAttribute("role").equals("instructor")) {
+                // to-do
+                String action = request.getParameter("action");
+            } else {
+                System.out.println("[!] Can't add, no session or role not set as instructor ");
+                response.setStatus(403);
                 response.sendRedirect(request.getContextPath() + "/");
             }
-
-            String description = request.getParameter("description");
-            if (DB.todo(description)) {
-                request.setAttribute("message","Todo added !");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/form.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                request.setAttribute("message","Error");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/form.jsp");
-                dispatcher.forward(request, response);
-            }
-
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -39,10 +39,13 @@ public class TodosServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("id") == null ) {
-                System.out.println("[!] No session");
+                System.out.println("[!] No session, redirecting to home");
+                String url = request.getContextPath() + "/";
+                System.out.println(url);
                 response.setStatus(403);
-                response.sendRedirect(request.getContextPath() + "/");
+                response.sendRedirect(url);
             } else {
+                System.out.println("[!] User logged, showing todos...");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/todos.jsp");
                 dispatcher.forward(request, response);
             }
@@ -75,7 +78,9 @@ public class TodosServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath()+"/");
             } else if (action.equals("Add")) {
                 System.out.println("[#] Instructor want to add a to do, redirecting to form...");
-                response.sendRedirect(request.getContextPath()+"/todo-form");
+                String url = request.getContextPath() + "/todos/form" ;
+                System.out.println("> " + url);
+                response.sendRedirect(request.getContextPath()+"/todos/form");
             } else {
                 System.out.println("[#] No action specified, redirecting nowhere");
                 response.sendRedirect(request.getContextPath());
