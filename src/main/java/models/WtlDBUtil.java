@@ -104,14 +104,101 @@ public class WtlDBUtil {
         }
     }
 
-    public boolean todo(String description) {
+    public List<Todo> getTodos() throws Exception{
+        List<Todo> todos = new ArrayList<>();
+        Connection c =null;
+        Statement s = null;
+        ResultSet r = null;
+        try {
+            c = dataSource.getConnection();
+            s= c.createStatement();
+            String sql = "SELECT * FROM todos";
+            r = s.executeQuery(sql);
+            while(r.next()){
+                int id = r.getInt("id");
+                String description = r.getString("description");
+                Todo todo = new Todo(id,description);
+                todos.add(todo);
+            }
+            return todos;
+        } finally{
+            close(c,s,r);
+        }
+    }
+
+    public Todo getTodo(int id) {
+        Connection c = null;
+        PreparedStatement s = null;
+        ResultSet r = null;
+        try {
+            c = dataSource.getConnection();
+            String sql = "SELECT * FROM todos WHERE id = ?";
+            s = c.prepareStatement(sql);
+            s.setInt(1,id);
+
+            r = s.executeQuery();
+            Todo t = null;
+            if (r.next()) {
+                t = new Todo(
+                    r.getInt("id"),
+                    r.getString("description")
+                );
+            }
+            return t;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            close(c,s,r);
+        }
+    }
+
+    public boolean registerTodo(Todo t) {
         Connection c = null;
         PreparedStatement s = null;
         try {
             c = dataSource.getConnection();
             String sql = "INSERT INTO todos(description) VALUES (?)";
             s = c.prepareStatement(sql);
+            s.setString(1,t.getDescription());
+
+            int r = s.executeUpdate();
+            return r == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            close(c,s,null);
+        }
+    }
+
+    public boolean updateTodo(int id, String description) {
+        Connection c = null;
+        PreparedStatement s = null;
+        try {
+            c = dataSource.getConnection();
+            String sql = "UPDATE todos SET description = ? WHERE id = ?";
+            s = c.prepareStatement(sql);
             s.setString(1,description);
+            s.setInt(2, id);
+            int r = s.executeUpdate();
+            return r == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            close(c,s,null);
+        }
+    }
+
+    public boolean deleteTodo(int id) {
+        Connection c = null;
+        PreparedStatement s = null;
+        try {
+            c = dataSource.getConnection();
+            String sql = "DELETE FROM todos WHERE id = ?";
+            s = c.prepareStatement(sql);
+            s.setInt(1,id);
 
             int r = s.executeUpdate();
             return r == 1;

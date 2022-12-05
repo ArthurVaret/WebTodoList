@@ -18,13 +18,19 @@
                         <label for="student"> Student </label>
                         <input type="radio" id="student" name="role" value="student">
                     </fieldset>
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="username">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="password">
-                    <label for="confirm">Confirm password</label>
-                    <input type="password" id="confirm" name="confirm-password" placeholder="confirm your password">
-                    <input type="submit" name="submit" value="Register">
+                    <div class="row">
+                        <label for="username">Username</label>
+                        <input class="text-input" type="text" id="username" name="username" placeholder="username">
+                    </div>
+                    <div class="row">
+                        <label for="password">Password</label>
+                        <input class="text-input" type="password" id="password" name="password" placeholder="password">
+                    </div>
+                    <div class="row">
+                        <label for="confirm">Confirm password</label>
+                        <input class="text-input" type="password" id="confirm" name="confirm-password" placeholder="confirm your password">
+                    </div>
+                    <input class="button" type="submit" name="submit" value="Register">
                 </form>
                 <a class="link" href="login">>Login</a>
                 <h2>${message}</h2>

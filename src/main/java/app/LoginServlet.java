@@ -42,11 +42,7 @@ public class LoginServlet extends HttpServlet {
 
         try {
             HttpSession session = request.getSession(false);
-            if (session != null) {
-                System.out.println("[#] Session exists, redirecting to todo list");
-                System.out.println("User : " + session.getAttribute("username") + ", " + session.getAttribute("role"));
-                response.sendRedirect(request.getContextPath() + "/todos");
-            } else {
+            if (session == null || session.getAttribute("username") == null || session.getAttribute("role") == null) {
                 System.out.println("[#] No session, checking cookies");
                 Cookie c = null;
                 if (request.getCookies() != null) {
@@ -62,7 +58,12 @@ public class LoginServlet extends HttpServlet {
                 System.out.println("[#] Sending login html");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
                 dispatcher.forward(request, response);
+                return;
             }
+            System.out.println("[#] Session exists, redirecting to todo list");
+            System.out.println("User : " + session.getAttribute("username") + ", " + session.getAttribute("role"));
+            response.sendRedirect(request.getContextPath() + "/todos");
+
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -8,14 +8,13 @@
         <link type="text/css" rel="stylesheet" href="style/main.css">
     </head>
     <body>
-
         <div class="container">
             <h1>Login</h1>
             <div>
                 <form method="POST" action="login">
                     <div class="row">
                         <label for="username">Username</label>
-                        <input class="text-input" type="text" id="username" name="username" placeholder="username" value="${username}">
+                        <input class="text-input" type="text" id="username" name="username" placeholder="username" value="<%=username%>">
                     </div>
                     <div class="row">
                         <label for="password">Password</label>

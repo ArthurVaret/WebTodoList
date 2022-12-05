@@ -1,5 +1,6 @@
 package app;
 
+import models.Todo;
 import models.WtlDBUtil;
 
 import javax.naming.Context;
@@ -12,8 +13,8 @@ import javax.servlet.http.*;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-@WebServlet(name = "todoformServlet", value = "/todos/form")
-public class TodoFormServlet extends HttpServlet {
+@WebServlet(name = "addServlet", value = "/todos/add")
+public class AddTodoServlet extends HttpServlet {
     private WtlDBUtil DB;
     private DataSource dataSource;
 
@@ -37,25 +38,25 @@ public class TodoFormServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            System.out.println("[GET] /todos/add");
             HttpSession session = request.getSession(false);
-            if (session != null) {
-                System.out.println("[!] User logged, checking role...");
-                System.out.println("User : " + session.getAttribute("username") + ", " + session.getAttribute("role"));
-                if (!session.getAttribute("role").equals("instructor")) {
-                    System.out.println("[!] Not instructor, redirecting... ");
-                    response.setStatus(403);
-                    response.sendRedirect(request.getContextPath() + "/todo");
-                } else {
-                    System.out.println("[!] Instructor verified ! Showing form... ");
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/form.jsp");
-                    dispatcher.forward(request, response);
-                }
-            } else {
-                System.out.println("[!] No session or role not set as instructor ");
+            if (session == null) {
+                System.out.println("[!] No session");
                 response.setStatus(403);
                 response.sendRedirect(request.getContextPath() + "/");
-
+                return;
             }
+            System.out.println("[!] User logged, checking role...");
+            System.out.println("User : " + session.getAttribute("username") + ", " + session.getAttribute("role"));
+            if (!session.getAttribute("role").equals("instructor")) {
+                System.out.println("[!] Not instructor, redirecting... ");
+                response.setStatus(403);
+                response.sendRedirect(request.getContextPath() + "/todo");
+                return;
+            }
+            System.out.println("[!] Instructor verified ! Showing add form... ");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/add.jsp");
+            dispatcher.forward(request, response);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -65,15 +66,24 @@ public class TodoFormServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            System.out.println("[POST] /todos/add");
             HttpSession session = request.getSession(false);
-            if (session != null && session.getAttribute("role").equals("instructor")) {
+            if ((session == null) && !session.getAttribute("role").equals("instructor")) {
                 // to-do
-                String action = request.getParameter("action");
-            } else {
                 System.out.println("[!] Can't add, no session or role not set as instructor ");
                 response.setStatus(403);
                 response.sendRedirect(request.getContextPath() + "/");
+                return;
             }
+            String description = request.getParameter("description");
+            if (DB.registerTodo(new Todo(description))) {
+                System.out.println("[+] Todo added");
+            } else {
+                request.setAttribute("message", "Error !");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/add.jsp");
+                dispatcher.forward(request, response);
+            }
+            response.sendRedirect(request.getContextPath() + "/todos");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
