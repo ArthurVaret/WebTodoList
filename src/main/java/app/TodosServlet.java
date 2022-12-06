@@ -105,10 +105,12 @@ public class TodosServlet extends HttpServlet {
             } else if(action.equals("Delete") && isInstructor) {
                 System.out.println("[#] Instructor want to delete a to do...");
                 int id = Integer.parseInt(request.getParameter("id"));
-                if (DB.deleteTodo(id)) request.setAttribute("message","Todo deleted");
-                else request.setAttribute("message","Error !");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/todos.jsp");
-                dispatcher.forward(request, response);
+                if (DB.deleteTodo(id)) response.sendRedirect(getServletContext()+"/todos");
+                else {
+                    request.setAttribute("message","Error !");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/todos.jsp");
+                    dispatcher.forward(request, response);
+                }
             } else {
                 System.out.println("[#] No action specified, redirecting nowhere");
                 response.sendRedirect(request.getContextPath());
