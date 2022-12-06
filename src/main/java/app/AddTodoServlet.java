@@ -68,7 +68,7 @@ public class AddTodoServlet extends HttpServlet {
         try {
             System.out.println("[POST] /todos/add");
             HttpSession session = request.getSession(false);
-            if ((session == null) && !session.getAttribute("role").equals("instructor")) {
+            if ((session == null) || !session.getAttribute("role").equals("instructor")) {
                 // to-do
                 System.out.println("[!] Can't add, no session or role not set as instructor ");
                 response.setStatus(403);

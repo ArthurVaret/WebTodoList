@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.text.ParseException;
 
 @WebServlet(name = "editServlet", value = "/todos/edit")
 public class EditTodoServlet extends HttpServlet {
@@ -83,7 +82,7 @@ public class EditTodoServlet extends HttpServlet {
         try {
             System.out.println("[POST] /todos/edit");
             HttpSession session = request.getSession(false);
-            if ((session == null) && !session.getAttribute("role").equals("instructor")) {
+            if ((session == null) || !session.getAttribute("role").equals("instructor")) {
                 // to-do
                 System.out.println("[!] Can't edit, no session or role not set as instructor ");
                 response.setStatus(403);
