@@ -16,13 +16,16 @@
                     <tr>
                         <th>Id </th>
                         <th>Description</th>
+                        <c:if test="${sessionScope.role == \"instructor\"}">
                         <th>Edit</th>
                         <th>Delete</th>
+                        </c:if>
                     </tr>
                     <c:forEach var="todo" items="${todos}">
                         <tr>
                             <td>${todo.id}</td>
                             <td>${todo.description}</td>
+                            <c:if test="${sessionScope.role == \"instructor\"}">
                             <td>
                                 <form method="POST" action="todos">
                                     <input class="button orange" type="submit" name="action" value="Edit" >
@@ -35,6 +38,7 @@
                                     <input type="hidden" name="id" value="${todo.id}">
                                 </form>
                             </td>
+                            </c:if>
                         </tr>
                     </c:forEach>
                 </table>

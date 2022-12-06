@@ -64,7 +64,7 @@ public class TodosServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             HttpSession session = request.getSession(false);
-            if (session == null) {
+            if (session == null || session.getAttribute("role") == null) {
                 System.out.println("[!] No session, redirecting to home");
                 String url = request.getContextPath() + "/";
                 System.out.println(url);
