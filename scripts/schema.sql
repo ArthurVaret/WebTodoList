@@ -6,7 +6,7 @@ CREATE TABLE users (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     username VARCHAR(20) NOT NULL,
     password VARCHAR(256) NOT NULL,
-    role INT
+    role ENUM("instructor","student")
 );
 
 CREATE TABLE todos (
